@@ -2,6 +2,7 @@
 const cryptoContext = require('./CryptoContext')
 const sm2 = require('sm-crypto').sm2
 const ecurve = require('ecurve')
+var BigInteger = require('bigi')
 
 const msg = "5669b294071363ea51d09206f0b02426a6457d3bd6fc1fa72d4f188a30821fed"
 // const plain = [0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0x45, 0x67, 0x89, 0xab, 0x89, 0xab, 0x45, 0x67, 0x89, 0xab]
@@ -9,19 +10,22 @@ const msg = "5669b294071363ea51d09206f0b02426a6457d3bd6fc1fa72d4f188a30821fed"
 cryptocontext = new cryptoContext()
 let keypair = cryptocontext.generateKeyPair()
 pk = keypair[1] // 公钥
+// sk = "8e3b8e6332210a2d6677f6b6654598495ddee4bd92c16068ef03bff5f2f5015e"
+// sk = "030d5371191884980c01a89160945e14278bb67ab455ba0d95fbb50095faf85c"
 sk = keypair[0] // 私钥
 console.log(pk)
-var ecparams = ecurve.getCurveByName('ec')
-console.log('000000000000000000000000000000000000000000000000000000000000000000' +ecurve.Point.decodeFrom(ecparams, Buffer.from(sm2.getBcecPublicKeyFromPrivateKey(sk), "hex")).affineY.toBuffer(32).toString('hex'))
 console.log(sk)
-// sk = "24494d955e8dc18ee3d2b715a9789dd05d9571fe0c17b7f20b697ace21cfa20b"
+let ecparams = ecurve.getCurveByName('ec')
+// console.log(ecurve.Point.decodeFrom(ecparams, Buffer.from(sm2.getBcecPublicKeyFromPrivateKey(sk), "hex")).affineY.toBuffer(32).toString('hex'))
+// console.log(ecurve.Point.decodeFrom(ecparams, Buffer.from(pk, "hex")).affineY.toBuffer(32).toString('hex'))
 // sk = "1184cd2cdd640ca42cfc3a091c51d549b2f016d454b2774019c2b2d2e08529fd"
 // console.log(sm2.getBcecPublicKeyFromPrivateKey(sk))
 // console.log(sm2.getPublicKeyFromBcecPublicKey(sm2.getBcecPublicKeyFromPrivateKey(sk)))
 sign = cryptocontext.sign(sk, msg)
 verify = cryptocontext.verify(pk, msg, sign)
-console.log(sign)
 console.log(verify)
+// console.log(BigInteger.fromBuffer(Buffer.from("2a625f23a025580fb83c17797afd0a39193063cf5ec0a9b5a791c86d86588e28", "hex")))
+// console.log(BigInteger.fromBuffer(Buffer.from("d59da0db5fdaa7f047c3e8868502f5c6e6cf9c2fa13f564b586e379279a771d7", "hex")))
 // encryptData = cryptocontext.encrypt(key, plain)
 // decryptData = cryptocontext.decrypt(key, encryptData)
 //
@@ -113,6 +117,4 @@ console.log(verify)
 // console.log(y.toString('hex'))
 // console.log(ecurve.Point.decodeFrom(Buffer.from(sm2.getBcecPublicKeyFromPrivateKey(sk), "hex"), xbuffer).affineX.toBuffer(32).toString('hex'))
 
-// Create and initialize EC context
-// (better do it once and reuse it)
 
