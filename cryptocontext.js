@@ -9,6 +9,7 @@ module.exports = function CryptoContext() {
     this.generateKeyPair = function(){
         let keypair = sm2.generateKeyPairHex();
         let privateKey = keypair.privateKey; // 私钥
+        console.log(keypair.publicKey)
         let publicKey = sm2.getBcecPublicKeyFromPrivateKey(privateKey); // 公钥
         return [privateKey, publicKey]
     }
@@ -26,8 +27,10 @@ module.exports = function CryptoContext() {
     }
 
     this.verify = function(pk, msg, sig){
-        var privateKey = new Buffer(sk, 'hex')
-        return sm2.doVerifySignature(msg, sig, pk, {
+        let curve = ecurve.getCurveByName('ec')
+        let pubkey = '04' + pk.slice(2) + ecurve.Point.decodeFrom(curve, Buffer.from(pk, "hex")).affineY.toBuffer(32).toString('hex')
+        console.log(pubkey)
+        return sm2.doVerifySignature(msg, sig, pubkey, {
             der: true,
             hash: true,
         });

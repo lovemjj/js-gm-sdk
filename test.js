@@ -1,6 +1,7 @@
 
 const cryptoContext = require('./CryptoContext')
 const sm2 = require('sm-crypto').sm2
+const ecurve = require('ecurve')
 
 const msg = "5669b294071363ea51d09206f0b02426a6457d3bd6fc1fa72d4f188a30821fed"
 // const plain = [0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0x45, 0x67, 0x89, 0xab, 0x89, 0xab, 0x45, 0x67, 0x89, 0xab]
@@ -10,15 +11,17 @@ let keypair = cryptocontext.generateKeyPair()
 pk = keypair[1] // 公钥
 sk = keypair[0] // 私钥
 console.log(pk)
+var ecparams = ecurve.getCurveByName('ec')
+console.log('000000000000000000000000000000000000000000000000000000000000000000' +ecurve.Point.decodeFrom(ecparams, Buffer.from(sm2.getBcecPublicKeyFromPrivateKey(sk), "hex")).affineY.toBuffer(32).toString('hex'))
 console.log(sk)
 // sk = "24494d955e8dc18ee3d2b715a9789dd05d9571fe0c17b7f20b697ace21cfa20b"
 // sk = "1184cd2cdd640ca42cfc3a091c51d549b2f016d454b2774019c2b2d2e08529fd"
 // console.log(sm2.getBcecPublicKeyFromPrivateKey(sk))
 // console.log(sm2.getPublicKeyFromBcecPublicKey(sm2.getBcecPublicKeyFromPrivateKey(sk)))
-// sign = cryptocontext.sign(sk, msg)
-// verify = cryptocontext.verify(pk, msg, sign)
-// console.log(sign)
-// console.log(verify)
+sign = cryptocontext.sign(sk, msg)
+verify = cryptocontext.verify(pk, msg, sign)
+console.log(sign)
+console.log(verify)
 // encryptData = cryptocontext.encrypt(key, plain)
 // decryptData = cryptocontext.decrypt(key, encryptData)
 //
@@ -99,18 +102,17 @@ console.log(sk)
 // var curvePt = ecparams.G.multiply(BigInteger.fromBuffer(privateKey))
 // console.log(curvePt)
 // var x = curvePt.affineX.toBuffer(32)
-// console.log(sm2.getBcecPublicKeyFromPrivateKey(sk))
+// console.log(x)
 // console.log(x.toString('hex'))
-// console.log(ecurve.Curve.prototype.pointFromX(sm2.getBcecPublicKeyFromPrivateKey(sk)[0] === 0x03, sm2.getBcecPublicKeyFromPrivateKey(sk)))
+// var ecbc = sm2.getBcecPublicKeyFromPrivateKey(sk)
+// console.log(Buffer.from(ecbc, "hex"))
+// console.log(BigInteger(ecbc).toBuffer(33))
+// xbuffer = Buffer.from(ecbc, "hex")
+// console.log(xbuffer)
 // var y = curvePt.affineY.toBuffer(32)
 // console.log(y.toString('hex'))
-const sec = require('ecc-jsbn/lib/sec')
-var curve = getSECCurveByName("secp256r1").getCurve(); // from sec.js
+// console.log(ecurve.Point.decodeFrom(Buffer.from(sm2.getBcecPublicKeyFromPrivateKey(sk), "hex"), xbuffer).affineX.toBuffer(32).toString('hex'))
 
-var compressed = "028bd9aaec3783a891b4d4707004b265715651a6a78f6a43b30c2b51d0b63052d8";
-var decompressed = curve.decodePointHex(compressed); // of type ECPointFp
-compressed = curve.encodeCompressedPointHex(decompressed);
-decompressed = curve.decodePointHex(compressed);
+// Create and initialize EC context
+// (better do it once and reuse it)
 
-console.log(compressed);
-console.log(curve.encodePointHex(decompressed)); // uncompressed hex encoding
