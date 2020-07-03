@@ -9,7 +9,6 @@ module.exports = function CryptoContext() {
     this.generateKeyPair = function(){
         let keypair = sm2.generateKeyPairHex();
         let privateKey = keypair.privateKey; // 私钥
-        console.log(keypair.publicKey)
         let publicKey = sm2.getBcecPublicKeyFromPrivateKey(privateKey); // 公钥
         return [privateKey, publicKey]
     }

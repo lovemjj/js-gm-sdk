@@ -13,9 +13,8 @@ pk = keypair[1] // 公钥
 // sk = "8e3b8e6332210a2d6677f6b6654598495ddee4bd92c16068ef03bff5f2f5015e"
 // sk = "030d5371191884980c01a89160945e14278bb67ab455ba0d95fbb50095faf85c"
 sk = keypair[0] // 私钥
-console.log(pk)
 console.log(sk)
-let ecparams = ecurve.getCurveByName('ec')
+console.log(pk)
 // console.log(ecurve.Point.decodeFrom(ecparams, Buffer.from(sm2.getBcecPublicKeyFromPrivateKey(sk), "hex")).affineY.toBuffer(32).toString('hex'))
 // console.log(ecurve.Point.decodeFrom(ecparams, Buffer.from(pk, "hex")).affineY.toBuffer(32).toString('hex'))
 // sk = "1184cd2cdd640ca42cfc3a091c51d549b2f016d454b2774019c2b2d2e08529fd"
