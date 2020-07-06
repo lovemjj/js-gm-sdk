@@ -3,7 +3,6 @@ module.exports = function CryptoContext() {
     const sm2 = require('sm-crypto').sm2;
     const sm3 = require('sm-crypto').sm3;
     const sm4 = require('sm-crypto').sm4;
-    const BigInteger = require('bigi');
     const ecurve = require('ecurve');
 
     this.generateKeyPair = function(){
